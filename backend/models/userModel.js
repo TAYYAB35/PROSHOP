@@ -4,24 +4,24 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        required: true
     },
     email: {
         type: String,
         require: true,
-        unique: true
+        uniqued: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     isAdmin: {
         type: Boolean,
-        require: true,
+        required: true,
         default: false
     }
 },{
-    timeseries : true
+    timestamps: true
 })
 
 const User = mongoose.model("User", userSchema);

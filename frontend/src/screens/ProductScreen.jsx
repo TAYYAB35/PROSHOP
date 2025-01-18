@@ -18,7 +18,7 @@ const ProductScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant={danger} >
+        <Message variant={'danger'} >
           {error?.error || "An error occurred while fetching the product."} </Message>
       ) : (
         <Row>

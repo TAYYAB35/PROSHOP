@@ -12,8 +12,8 @@ export const productApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 5 // Retain unused data for 5 seconds before removing it from the cache
         }),
         getProductDetails: builder.query({
-            query: (productId) => ({
-                url: `${PRODUCT_URL}/${productId}`
+            query: (id) => ({
+                url : `/api/products/${id}` // Fallback
             }),
             keepUnusedDataFor: 5
         })

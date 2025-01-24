@@ -11,7 +11,6 @@ import { useDispatch } from 'react-redux';
 const ProductScreen = () => {
 
   const { id: productId } = useParams(); // the id has datatype of string
-  console.log('Product ID:', productId); // Debug to ensure the ID is extracted correctly
 
   const { data: product, isLoading, error } = useGetProductDetailsQuery(productId);
 

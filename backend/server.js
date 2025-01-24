@@ -1,6 +1,7 @@
 import express from 'express';
 import connectDB from './config/db.js';
 import productRoute from './routes/productRoutes.js';
+import userRoute from './routes/userRoutes.js';
 import { errorHandler, notFound } from './middlewear/errorMiddlewear.js'
 
 import dotenv from 'dotenv';
@@ -14,7 +15,8 @@ app.get('/', (req, res) => {
     res.send('api is running ...')
 })
 
-app.use('/api/products', productRoute)
+app.use('/api/products', productRoute);
+app.use('/api/users', userRoute);
 
 app.use(notFound);
 app.use(errorHandler);

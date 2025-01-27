@@ -1,5 +1,5 @@
 import asyncHandler from './../middlewear/asyncHandler.js';
-import Product from '../models/productModel.js'
+import USER from '../models/userModel.js'
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -12,7 +12,28 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/login
 // @access  public
 const authUser = asyncHandler(async (req, res) => {
-    res.json('Auth User')
+
+    const { email, password } = req.body;
+
+    const user = await USER.findOne({ email })
+
+    if (user && (await user.matchPassword(password))) {
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            // token: user.getSignedJwtToken()
+        });
+    }else{
+        res.status(401)
+        throw new Error('Invalid email or password')
+    }
+
+    // if (!user || !(await USER.matchPassword(password))) {
+    //     return res.status(401).json({ message: 'Invalid email or password' });
+    // }
+
 })
 
 // @desc    Logout a user / clear cocookie
@@ -39,15 +60,15 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @desc    get users
 // @route   GET /api/users
 // @access  private/admin 
-// const getUsers = asyncHandler(async (req, res) => {
-//     res.json('getUsers')
-// })
+const getUsers = asyncHandler(async (req, res) => {
+    res.json('getUsers')
+})
 
 // @desc    UPDATE users
 // @route   put /api/users
 // @access  private/admin 
-const getUsers = asyncHandler(async (req, res) => {
-    res.json('getUsers')
+const updateUsers = asyncHandler(async (req, res) => {
+    res.json('Update Users')
 })
 
 // @desc    get user by id
@@ -64,4 +85,4 @@ const deleteUsers = asyncHandler(async (req, res) => {
     res.json('delete Users')
 })
 
-export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile,getUsers }
+export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, getUsers, updateUsers, getUserByID, deleteUsers }

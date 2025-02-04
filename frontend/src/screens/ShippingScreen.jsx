@@ -3,29 +3,33 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import FormContainer from '../components/FormContainer';
+import { saveShippingAddress } from '../slices/cartSlice'
+import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingScreen = () => {
+    const  cart  = useSelector((state) => state.cart);
+    const {shippingAddress}  = cart;
 
-    const [address, SetAddress] = React.useState('');
-    const [city, SetCity] = React.useState('');
-    const [postalCode, SetPostalCode] = React.useState('');
-    const [country, SetCountry] = React.useState('');
+    const [address, SetAddress] = React.useState( shippingAddress?.address || '');
+    const [city, SetCity] = React.useState( shippingAddress?.city || '');
+    const [postalCode, SetPostalCode] = React.useState( shippingAddress?.postalCode || '');
+    const [country, SetCountry] = React.useState( shippingAddress?.country || '');
     const dispatch = useDispatch();
-
-    const { cart } = useSelector((state) => state.cart);
-    // const { shippingAddress } = cart;
-    console.log(cart,'cart');
-    
+    const navigate = useNavigate();
 
     const submitHandler = (e) => {
         e.preventDefault();
         console.log('submit');
-        // dispatch(saveShippingAddress({ address, city, postalCode, country }));
+        dispatch(saveShippingAddress({ address, city, postalCode, country }));
+        navigate('/payment')
     }
 
     return (
         <FormContainer>
             <h1>Shipping</h1>
+
+            <CheckoutSteps step1 step2 />
+
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId='address' className='mb-3'>
                     <Form.Label>Address</Form.Label>

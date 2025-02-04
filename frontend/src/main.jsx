@@ -4,9 +4,10 @@ import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
 import App from './App.jsx';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
-import { CartScreen, HomeScreen, ProductScreen, LoginScreen,RegisterScreen,ShippingScreen } from './screens/index.js';
+import { CartScreen, HomeScreen, ProductScreen, LoginScreen, RegisterScreen, ShippingScreen, PaymentScreen } from './screens/index.js';
 import { Provider } from 'react-redux';
 import store from './store.js';
+import PrivateRouter from './components/PrivateRouter.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,7 +17,12 @@ const router = createBrowserRouter(
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
-      <Route path='/shipping' element={<ShippingScreen />} />
+
+      <Route path='' element={<PrivateRouter />}>
+        <Route path='/shipping' element={<ShippingScreen />} />
+        <Route path='/payment' element={<PaymentScreen />} />
+      </Route>
+
     </Route>
   )
 )

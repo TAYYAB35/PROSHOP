@@ -18,19 +18,20 @@ const OrderScreen = () => {
     // PayPal related
     const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-    const { data: paypal, isLoading: loadingPayPal, isError: paypalError } = useGetPayPalClientIdQuery();
+    const { data: paypal, isLoading: loadingPayPal, isError: Errorpaypal } = useGetPayPalClientIdQuery();
 
     // User authentication
     const { userInfo } = useSelector((state) => state.auth);
 
     // Load PayPal script only when required
     useEffect(() => {
-        if (!paypalError && paypal && !loadingPayPal) {
+
+        if (!Errorpaypal && paypal && !loadingPayPal) {
             const loadPayPalScript = async () => {
                 paypalDispatch({
                     type: 'resetOptions',
-                    options: {
-                        'client-id': paypal.clientId,
+                    value: {
+                        'client-id': paypal,
                         currency: "USD",
                     }
                 });
@@ -41,12 +42,10 @@ const OrderScreen = () => {
             };
 
             if (order && !order.isPaid) {
-                if (!window.paypal) {
-                    loadPayPalScript();
-                }
+                loadPayPalScript();
             }
         }
-    }, [order, paypal, paypalDispatch, loadingPayPal, paypalError]);
+    }, [order, paypal, paypalDispatch, loadingPayPal, Errorpaypal]);
 
     // Test Payment Function (Mark as Paid)
     const onApproveTest = async () => {
@@ -96,8 +95,8 @@ const OrderScreen = () => {
                             <h2>Shipping</h2>
                             <p><strong>Name: </strong> {order.user.name}</p>
                             <p><strong>Email: </strong> {order.user.email}</p>
-                            <p><strong>Address: </strong> 
-                                {order.shippingAddress.address}, {order.shippingAddress.city}, 
+                            <p><strong>Address: </strong>
+                                {order.shippingAddress.address}, {order.shippingAddress.city},
                                 {order.shippingAddress.postalCode}, {order.shippingAddress.country}
                             </p>
                             {order.isDelivered ? (
@@ -163,10 +162,10 @@ const OrderScreen = () => {
                                                     Test Pay Order
                                                 </Button>
                                                 <div>
-                                                    <PayPalButtons 
-                                                        createOrder={createOrder} 
-                                                        onApprove={onApprove} 
-                                                        onError={onError} 
+                                                    <PayPalButtons
+                                                        createOrder={createOrder}
+                                                        onApprove={onApprove}
+                                                        onError={onError}
                                                     />
                                                 </div>
                                             </div>

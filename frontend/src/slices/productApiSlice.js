@@ -13,7 +13,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         }),
         getProductDetails: builder.query({
             query: (id) => ({
-                url : `/api/products/${id}` // Fallback
+                url : `/products/${id}` // Fallback
             }),
             keepUnusedDataFor: 5
         })

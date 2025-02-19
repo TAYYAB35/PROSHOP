@@ -15,23 +15,22 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         // By default the method is GET
         getOrderDetails: builder.query({
             query: (orderId) => ({
-                url: `/api/orders/${orderId}`,
+                url: `/orders/${orderId}`,
             }),
             keepUnsuedDataFor: 5
         }), //
         payOrder: builder.mutation({
             query: ({orderId,details}) => ({
-                url: `/api/orders/${orderId}/pay`,
-                method: 'POST',
+                url: `/orders/${orderId}/pay`,
+                method: 'PUT',
                 body : {...details}
             }),
-            keepUnsuedDataFor: 5
         }),
         getPayPalClientId : builder.query({
             query: () => ({
                 url: PAYPAL_URL,
             }),
-            keepUnsuedDataFor: 5
+            keepUnusedDataFor: 5
         })
     })
 });

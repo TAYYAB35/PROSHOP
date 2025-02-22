@@ -19,7 +19,8 @@ const OrderScreen = () => {
     const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
     const { data: paypal, isLoading: loadingPayPal, isError: Errorpaypal } = useGetPayPalClientIdQuery();
-
+    console.log('paypal', paypal);
+    
     // User authentication
     const { userInfo } = useSelector((state) => state.auth);
 
@@ -31,7 +32,7 @@ const OrderScreen = () => {
                 paypalDispatch({
                     type: 'resetOptions',
                     value: {
-                        'client-id': paypal,
+                        'client-id': paypal.clientID,
                         currency: "USD",
                     }
                 });

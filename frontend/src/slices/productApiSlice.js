@@ -11,9 +11,24 @@ export const productApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5 // Retain unused data for 5 seconds before removing it from the cache
         }),
+        createProduct: builder.mutation({
+            query: () => ({
+                url: PRODUCT_URL,
+                method: 'POST',
+            }),
+            invalidatesTags: ['Products']
+        }),
+        updateProduct: builder.mutation({
+            query: (data) => ({
+                url: `${PRODUCT_URL}/${data.id}`,
+                method: 'PUT',
+                body: data
+            }),
+            invalidatesTags: ['Products']
+        }),
         getProductDetails: builder.query({
             query: (id) => ({
-                url : `/products/${id}` // Fallback
+                url: `/products/${id}` // Fallback
             }),
             keepUnusedDataFor: 5
         })
@@ -21,4 +36,4 @@ export const productApiSlice = apiSlice.injectEndpoints({
     })
 });
 
-export const { useGetProductsQuery, useGetProductDetailsQuery } = productApiSlice
+export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation ,useUpdateProductMutation } = productApiSlice

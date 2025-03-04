@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap';
-import { useGetOrderDetailsQuery, useGetPayPalClientIdQuery, usePayOrderMutation } from '../slices/orderApiSlice';
+import { useGetOrderDetailsQuery, useGetPayPalClientIdQuery, usePayOrderMutation, useDeliverOrderMutation } from '../slices/orderApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
@@ -17,10 +17,10 @@ const OrderScreen = () => {
 
     // PayPal related
     const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+    const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
     const { data: paypal, isLoading: loadingPayPal, isError: Errorpaypal } = useGetPayPalClientIdQuery();
-    console.log('paypal', paypal);
-    
+
     // User authentication
     const { userInfo } = useSelector((state) => state.auth);
 
@@ -86,6 +86,18 @@ const OrderScreen = () => {
         toast.error(`Payment Failed: ${error.message}`);
     };
 
+    const deliverOrderHandler = async () => {
+        try {
+            console.log(order._id);
+
+            await deliverOrder(order._id);
+            refetch();
+            toast.success("Order marked as delivered successfully.");
+        } catch (error) {
+            toast.error("Failed to deliver order.");
+        }
+    }
+
     return isLoading ? <Loader /> : isError ? <Message variant="danger" /> : (
         <>
             <h1>Order {order._id}</h1>
@@ -101,7 +113,13 @@ const OrderScreen = () => {
                                 {order.shippingAddress.postalCode}, {order.shippingAddress.country}
                             </p>
                             {order.isDelivered ? (
-                                <Message variant="success">Delivered on {order.deliveredAt}</Message>
+                                <Message variant="success">
+                                    Delivered on {new Date(order.deliveredAT).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric'
+                                    })}
+                                </Message>
                             ) : (
                                 <Message variant="danger">Not delivered yet</Message>
                             )}
@@ -111,7 +129,13 @@ const OrderScreen = () => {
                             <h2>Payment Method</h2>
                             <p><strong>Method: </strong> {order.paymentMethod}</p>
                             {order.isPaid ? (
-                                <Message variant="success">Paid on {order.paidAt}</Message>
+                                <Message variant="success">
+                                    Paid on {new Date(order.paidAT).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric'
+                                    })}
+                                </Message>
                             ) : (
                                 <Message variant="danger">Not paid yet</Message>
                             )}
@@ -171,6 +195,16 @@ const OrderScreen = () => {
                                                 </div>
                                             </div>
                                         )}
+                                    </ListGroup.Item>
+                                )}
+                                {
+                                    loadingDeliver && <Loader />
+                                }
+                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        <Button onClick={deliverOrderHandler} >
+                                            Mark as Delivered
+                                        </Button>
                                     </ListGroup.Item>
                                 )}
                             </ListGroup.Item>

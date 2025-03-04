@@ -39,7 +39,7 @@ const getMyOrder = asyncHandler(async (req, res) => {
 // @route   GET /api/order/:id
 // @access  private
 const getOrderById = asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id).populate('user','name email');
+    const order = await Order.findById(req.params.id).populate('user', 'name email');
     if (!order) {
         res.status(404);
         throw new Error('Resource not found')
@@ -53,10 +53,10 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @access  private
 const updateOrderToPayed = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
-    if(order){
+    if (order) {
         order.isPaid = true;
         order.paidAT = Date.now();
-        order.paymentResult= {
+        order.paymentResult = {
             id: req.body.id,
             status: req.body.status,
             update_time: req.body.update_time,
@@ -64,8 +64,8 @@ const updateOrderToPayed = asyncHandler(async (req, res) => {
         }
         const updatedOrder = await order.save();
         res.status(200).json(updatedOrder);
-    }else{
-         
+    } else {
+
         res.status(404);
         throw new Error('Order not found')
     }
@@ -73,17 +73,28 @@ const updateOrderToPayed = asyncHandler(async (req, res) => {
 })
 
 // @desc    Update Order to Deliverd
-// @route   GET /api/order/:id/deliverd
+// @route   PUT /api/order/:id/deliverd
 // @access  private/admin
 const updateOrderToDeliverd = asyncHandler(async (req, res) => {
-    res.json('update Order To Deliverd')
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+        res.status(404);
+        throw new Error('Order not found')
+    }else{
+        order.isDelivered = true;
+        order.deliveredAT = Date.now();
+        const updatedOrder = await order.save();
+        res.status(200).json(updatedOrder);
+    }
+
 })
 
 // @desc    GET All Orders
 // @route   GET /api/orders
 // @access  private/admin
 const getOrders = asyncHandler(async (req, res) => {
-    res.json('get All Orders')
+    const orders = await Order.find({}).populate('user', 'id name');
+    res.status(200).json(orders);
 })
 
 

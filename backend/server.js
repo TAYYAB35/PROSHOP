@@ -1,8 +1,10 @@
+import path from 'path';
 import express from 'express';
 import connectDB from './config/db.js';
 import productRoute from './routes/productRoutes.js';
 import userRoute from './routes/userRoutes.js';
 import orderRoute from './routes/orderRoutes.js';
+import uploadRoute from './routes/uploadRoutes.js'
 import { errorHandler, notFound } from './middlewear/errorMiddlewear.js';
 import cookieParser from 'cookie-parser';
 
@@ -27,10 +29,17 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoute);
 app.use('/api/users', userRoute);
 app.use('/api/orders', orderRoute);
+app.use('/api/upload', uploadRoute);
+
+
 app.get('/api/config/paypal', (req, res) => {
-    console.log('id',process.env.PAYPAL_CLIENT_ID);
+    console.log('id', process.env.PAYPAL_CLIENT_ID);
     res.send({ clientID: process.env.PAYPAL_CLIENT_ID })
 })
+
+const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))// to serve uploaded images
+
 
 app.use(notFound);
 app.use(errorHandler);

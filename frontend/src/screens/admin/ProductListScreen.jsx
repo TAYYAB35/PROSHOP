@@ -5,16 +5,25 @@ import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux';
-import { useGetProductsQuery, useCreateProductMutation } from '../../slices/productApiSlice'
+import { useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation } from '../../slices/productApiSlice'
 import { Link } from 'react-router-dom';
 
 const ProductListScreen = () => {
 
     const { data: products, isLoading, isError, refetch } = useGetProductsQuery();
     const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
+    const [deleteProd, { isLoading: loadingDelete }] = useDeleteProductMutation();
 
     const deleteProduct = async (id) => {
-
+        if (window.confirm('Are you sure you want to create this product')) {
+            try {
+                let product = await deleteProd();
+                refetch();
+                toast.success('Product created successfully');
+            } catch (error) {
+                toast.error(error);
+            }
+        }
     }
 
     const createProductHandler = async (id) => {

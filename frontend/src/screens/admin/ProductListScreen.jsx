@@ -17,9 +17,9 @@ const ProductListScreen = () => {
     const deleteProduct = async (id) => {
         if (window.confirm('Are you sure you want to create this product')) {
             try {
-                let product = await deleteProd();
+                await deleteProd(id);
                 refetch();
-                toast.success('Product created successfully');
+                toast.success('Product deleted successfully');
             } catch (error) {
                 toast.error(error);
             }

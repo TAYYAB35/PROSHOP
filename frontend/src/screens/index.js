@@ -10,3 +10,4 @@ export { default as OrderScreen } from './OrderScreen';
 export { default as OrderListScreen } from './admin/OrderListScreen';
 export { default as ProductListScreen } from './admin/ProductListScreen';
 export { default as ProductEditScreen } from './admin/ProductEditScreen';
+export { default as UserListScreen } from './admin/UserListScreen';

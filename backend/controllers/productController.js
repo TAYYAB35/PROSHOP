@@ -65,8 +65,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
     if (!product) {
         res.status(404);
         throw new Error('Resource not found')
-    }else{
-        await product.remove();
+    } else {
+        await product.deleteOne({ _id: product._id });
         res.status(200).json({ message: 'Product deleted successfully' });
     }
 })

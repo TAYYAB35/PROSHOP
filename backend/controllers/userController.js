@@ -131,7 +131,7 @@ const getUsers = asyncHandler(async (req, res) => {
 // @route   put /api/users
 // @access  private/admin 
 const updateUsers = asyncHandler(async (req, res) => {
-    const user = await User.findOne(req.params.id)
+    const user = await User.findById(req.params.id)
     if (user) {
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email

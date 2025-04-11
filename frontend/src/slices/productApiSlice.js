@@ -45,9 +45,20 @@ export const productApiSlice = apiSlice.injectEndpoints({
                 url: `/products/${id}` // Fallback
             }),
             keepUnusedDataFor: 5
-        })
+        }),
+        createReview: builder.mutation({
+            query: (data) => ({
+                url: `/products/${data.productId}/reviews`,
+                method: 'POST',
+                body: data
+            }),
+            invalidatesTags: ['Products'], // Invalidate the 'Products' tag to refetch the product list after creating a review
+            // This will ensure that the product list is updated with the new review data
+        }),
 
     })
 });
 
-export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useUploadProductImageMutation } = productApiSlice
+export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation,
+    useUploadProductImageMutation , useCreateReviewMutation
+} = productApiSlice

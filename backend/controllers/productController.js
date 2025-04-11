@@ -71,4 +71,42 @@ const deleteProduct = asyncHandler(async (req, res) => {
     }
 })
 
-export { getAllProducts, getProductById, creatProduct, updateProduct, deleteProduct }
+// @desc    review a product / crate a review
+// @route   post /api/products/:id/reviews
+// @access  private 
+const creatProductReview = asyncHandler(async (req, res) => {
+
+    const { rating, comment } = req.body;
+
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+        res.status(404);
+        throw new Error('Resource not found')
+    } else {
+        // review tb he add hona ha jb product k andar review ki array me user ka id nahi hoga
+
+        const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString());
+        // alreadyreview k matlab ha ka product ki reviews ki array ma user ki id pass ho gyi ha 
+        if (alreadyReviewed) {
+            res.status(400);
+            throw new Error('Product already reviewed')
+        }
+
+        const review = {
+            name: req.user.name,
+            rating: Number(rating),
+            comment,
+            user: req.user._id
+        }
+
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+        product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length;
+        await product.save();
+        res.status(201).json({ message: 'Review added successfully' });
+
+
+    }
+})
+
+export { getAllProducts, getProductById, creatProduct, updateProduct, deleteProduct,creatProductReview }

@@ -2,19 +2,28 @@ import React, { } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Form, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
 import Rating from '../components/Rating';
-import { useGetProductDetailsQuery } from '../slices/productApiSlice';
+import { useGetProductDetailsQuery, useCreateReviewMutation } from '../slices/productApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { addToCart } from './../slices/cartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProductScreen = () => {
 
   const { id: productId } = useParams(); // the id has datatype of string
 
-  const { data: product, isLoading, error } = useGetProductDetailsQuery(productId);
+  const { data: product,refetch, isLoading, error } = useGetProductDetailsQuery(productId);
+  const [createReview, { isLoading: loadingProductReview }] = useCreateReviewMutation(); // createReview is a function that can be called to create a review
+
+
+  // useSelector is used to access the state of the redux store
+  // useDispatch is used to dispatch actions to the redux store
 
   const [qty, setQty] = React.useState(1);
+  const [Rating, setRating] = React.useState(0);
+  const [comment, setComment] = React.useState('');
+
+  const { userInfo } = useSelector((state) => state.auth); // userInfo is the user object that is stored in the redux store
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

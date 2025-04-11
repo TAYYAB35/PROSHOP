@@ -49,7 +49,7 @@ const UserListScreen = () => {
                                             <FaCheck style={{ color: 'green' }} />
                                             : <FaTimes style={{ color: 'Red' }} />}</td>
                                         <td>
-                                            <Link to={`/admin/user/${user._id}/edit`}>
+                                            <Link to={`/admin/users/${user._id}/edit`}>
                                                 <Button className='btn-sm mx-2' variant='light' >
                                                     <FaEdit />
                                                 </Button>

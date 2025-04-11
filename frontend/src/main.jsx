@@ -4,7 +4,7 @@ import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
 import App from './App.jsx';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
-import { CartScreen, HomeScreen, ProductScreen, LoginScreen, RegisterScreen, UserListScreen, ShippingScreen, ProductEditScreen, PaymentScreen, PlaceOrderScreen, OrderScreen, OrderListScreen, ProductListScreen } from './screens/index.js';
+import { CartScreen, HomeScreen, ProductScreen, LoginScreen, RegisterScreen, UserListScreen, UserEditScreen,ShippingScreen, ProductEditScreen, PaymentScreen, PlaceOrderScreen, OrderScreen, OrderListScreen, ProductListScreen } from './screens/index.js';
 import { Provider } from 'react-redux';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import store from './store.js';
@@ -34,6 +34,7 @@ const router = createBrowserRouter(
         <Route path='/admin/users' element={<UserListScreen />} />
         <Route path='/admin/productlist' element={<ProductListScreen />} />
         <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
+        <Route path='/admin/users/:id/edit' element={<UserEditScreen />} />
       </Route>
 
     </Route>

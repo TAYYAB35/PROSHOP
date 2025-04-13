@@ -6,9 +6,10 @@ export const productApiSlice = apiSlice.injectEndpoints({
         // Use ** query ** for fetching data(read- only).
         // Use ** mutation ** for modifying data(write operations).
         getProducts: builder.query({
-            query: ({pageNumber}) => ({
+            query: ({ keyword, pageNumber }) => ({
                 url: PRODUCT_URL,
-                params : {
+                params: {
+                    keyword,
                     pageNumber
                 }
             }),
@@ -63,5 +64,5 @@ export const productApiSlice = apiSlice.injectEndpoints({
 });
 
 export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation,
-    useUploadProductImageMutation , useCreateReviewMutation
+    useUploadProductImageMutation, useCreateReviewMutation
 } = productApiSlice

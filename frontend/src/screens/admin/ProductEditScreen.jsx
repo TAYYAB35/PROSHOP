@@ -27,7 +27,6 @@ const ProductEditScreen = () => {
             countInStock,
             description
         }
-        debugger
         const res = await updateProduct(updatedProduct);
         if (res.error) {
             toast.error(res.error.data.message);
@@ -97,9 +96,8 @@ const ProductEditScreen = () => {
                         {/* placeholder for image */}
                         <Form.Group controlId='image' className='mb-2'>
                             <Form.Label>Image</Form.Label>
-                            <Form.Control type="text" value={image} placeholder='Enter image URl' onChange={(e) => setImage(e.target.value)} />
+                            <Form.Control type="text" value={image} placeholder='Enter image URl' onChange={(e) => setImage} readOnly/>
                             <Form.Control type="file" label='Choose File' onChange={uploadFileHandler} />
-
                         </Form.Group>
                         <Form.Group controlId='brand' className='mb-2'>
                             <Form.Label>Brand</Form.Label>

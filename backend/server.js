@@ -38,7 +38,7 @@ app.get('/api/config/paypal', (req, res) => {
 })
 
 const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))// to serve uploaded images
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))// to serve uploaded images
 
 
 app.use(notFound);

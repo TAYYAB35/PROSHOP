@@ -11,6 +11,9 @@ const CartScreen = () => {
     const navigate = useNavigate();
 
     const cart = useSelector(state => state.cart);
+    const userInfo = useSelector(state => state.auth);
+    console.log(userInfo);
+    
     const cartItems = cart.cartItems;
 
     const addToCartHandler = async (product, qty) => {
@@ -22,7 +25,11 @@ const CartScreen = () => {
     }
 
     const checkoutHandler = () => {
-        navigate('/login?redirect=shipping');
+        if (userInfo) {
+            navigate('/shipping');
+        } else {
+            navigate('/login?redirect=shipping');
+        }
     }
 
     return (

@@ -13,7 +13,6 @@ const ProductScreen = () => {
   const { id: productId } = useParams(); // the id has datatype of string
 
   const { data: product, refetch, isLoading, error } = useGetProductDetailsQuery(productId);
-  const { data: product, refetch, isLoading, error } = useGetProductDetailsQuery(productId);
   const [createReview, { isLoading: loadingProductReview }] = useCreateReviewMutation(); // createReview is a function that can be called to create a review
 
 

@@ -48,16 +48,16 @@ const OrderScreen = () => {
         }
     }, [order, paypal, paypalDispatch, loadingPayPal, Errorpaypal]);
 
-    // // Test Payment Function (Mark as Paid)
-    // const onApproveTest = async () => {
-    //     try {
-    //         await payOrder({ orderId: order._id, status: 'COMPLETED' });
-    //         refetch();
-    //         toast.success("Order marked as paid successfully.");
-    //     } catch (error) {
-    //         toast.error("Test payment failed.");
-    //     }
-    // };
+    // Test Payment Function (Mark as Paid)
+    const onApproveTest = async () => {
+        try {
+            await payOrder({ orderId: order._id, status: 'COMPLETED' });
+            refetch();
+            toast.success("Order marked as paid successfully.");
+        } catch (error) {
+            toast.error("Test payment failed.");
+        }
+    };
 
     // PayPal: Create Order
     const createOrder = (data, actions) => {

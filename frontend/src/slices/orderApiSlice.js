@@ -15,7 +15,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         // By default the method is GET
         getOrderDetails: builder.query({
             query: (orderId) => ({
-                url: `/orders/${orderId}`,
+                url: `${ORDER_URL}/${orderId}`,
             }),
             keepUnsuedDataFor: 5
         }),

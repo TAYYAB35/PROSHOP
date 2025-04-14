@@ -7,6 +7,7 @@ import Message from '../components/Message';
 import { addToCart } from './../slices/cartSlice';
 import Rating from '../../src/components/Rating';
 import { useDispatch, useSelector } from 'react-redux';
+import Meta from '../components/Meta';
 
 const ProductScreen = () => {
 
@@ -49,6 +50,7 @@ const ProductScreen = () => {
 
   return (
     <>
+      <Meta title={product?.name} description={product?.description}  />
       <Link className='btn btn-light my-3' to='/' >Go Back </Link>
       {isLoading ? (
         <Loader />

@@ -39,11 +39,11 @@ const Header = () => {
                         PROSHOP
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls='basic-navbar-nav' />
-                    <Navbar.Collapse id='basic-navbar-nav' >
+                    <Navbar.Collapse id='basic-navbar-nav' className='d-flex justify-content-end' >
 
                         <SearchBox />
 
-                        <Nav className='ms-auto'>
+                        <Nav className=''>
                             <Nav.Link as={Link} to='/cart'><FaShoppingCart /><span className='ms-1' > {cartItems.length > 0 && (<Badge pill bg='success' style={{ marginLeft: "5px" }} >{cartItems.reduce((a, c) => a + c.qty, 0)}</Badge>)} Cart</span></Nav.Link>
                             {userInfo ? (
                                 <NavDropdown title={userInfo.name} id='username' >

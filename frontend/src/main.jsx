@@ -11,6 +11,7 @@ import store from './store.js';
 import PrivateRouter from './components/PrivateRouter.jsx';
 import AdminRoute from './components/AdminRoute.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
+import { HelmetProvider } from 'react-helmet-async';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,10 +48,12 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <HelmetProvider>
     <Provider store={store}>
       <PayPalScriptProvider deferLoading={true} >
         <RouterProvider router={router} />
       </PayPalScriptProvider>
     </Provider>
+    </HelmetProvider>
   </StrictMode>,
 )

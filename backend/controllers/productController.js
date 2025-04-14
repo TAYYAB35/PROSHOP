@@ -8,8 +8,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
     const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
 
-    const count = await Product.countDocuments({...keyword}); //get all products
-    const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1));
+    const count = await Product.countDocuments({ ...keyword }); //get all products
+    const products = await Product.find({ ...keyword }).limit(pageSize).skip(pageSize * (page - 1));
     res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
 
@@ -19,7 +19,19 @@ const getProductById = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error('Resource not found')
     }
-    res.json(product)
+    res.status(200).json(product)
+})
+
+// @desc    Get top rated products
+// @route   POST /api/products/top
+// @access  private 
+const getTopProduct = asyncHandler(async (req, res) => {
+    const products = await Product.find({ rating: { $gte: 4.5 } }).sort({ rating: -1 }).limit(3);
+    if (!products) {
+        res.status(404);
+        throw new Error('Resource not found')
+    }
+    res.status(200).json(products)
 })
 
 // @desc    Create a new product
@@ -117,4 +129,4 @@ const creatProductReview = asyncHandler(async (req, res) => {
 })
 
 
-export { getAllProducts, getProductById, creatProduct, updateProduct, deleteProduct, creatProductReview }
+export { getAllProducts, getProductById, creatProduct, updateProduct, deleteProduct, creatProductReview, getTopProduct }

@@ -22,9 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // cookie parser
 app.use(cookieParser());// in order to get the cookie from the request header
 
-app.get('/', (req, res) => {
-    res.send('api is running ...')
-})
+
 
 app.use('/api/products', productRoute);
 app.use('/api/users', userRoute);
@@ -39,6 +37,22 @@ app.get('/api/config/paypal', (req, res) => {
 
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))// to serve uploaded images
+
+if (process.env.NODE_ENV === 'production') {
+
+    app.use(express.static(path.join(__dirname, '/frontend/build')))// to serve the frontend build files
+
+    // all the routes that are not defined in the backend will be redirected to index.html
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '/frontend/build/index.html'));
+    })
+} else {
+    
+    // if the app is not in production mode, it will serve the api running message
+    app.get('/', (req, res) => {
+        res.send('api is running ...')
+    })
+}
 
 
 app.use(notFound);

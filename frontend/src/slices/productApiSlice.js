@@ -59,10 +59,15 @@ export const productApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['Products'], // Invalidate the 'Products' tag to refetch the product list after creating a review
             // This will ensure that the product list is updated with the new review data
         }),
-
+        getTopProducts: builder.query({
+            query: () => ({
+                url: `${PRODUCT_URL}/top`,
+            }),
+            keepUnusedDataFor: 5
+        }),
     })
 });
 
 export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation,
-    useUploadProductImageMutation, useCreateReviewMutation
+    useUploadProductImageMutation, useCreateReviewMutation , useGetTopProductsQuery
 } = productApiSlice

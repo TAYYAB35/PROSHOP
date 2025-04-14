@@ -2,8 +2,15 @@ import asyncHandler from './../middlewear/asyncHandler.js';
 import Product from '../models/productModel.js'
 
 const getAllProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({});
-    res.json(products)
+    const pageSize = 8;
+    const page = Number(req.query.pageNumber || 1);
+
+
+    const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
+
+    const count = await Product.countDocuments({...keyword}); //get all products
+    const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1));
+    res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
 
 const getProductById = asyncHandler(async (req, res) => {
@@ -109,4 +116,5 @@ const creatProductReview = asyncHandler(async (req, res) => {
     }
 })
 
-export { getAllProducts, getProductById, creatProduct, updateProduct, deleteProduct,creatProductReview }
+
+export { getAllProducts, getProductById, creatProduct, updateProduct, deleteProduct, creatProductReview }

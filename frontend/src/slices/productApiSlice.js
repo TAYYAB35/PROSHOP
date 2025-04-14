@@ -6,8 +6,12 @@ export const productApiSlice = apiSlice.injectEndpoints({
         // Use ** query ** for fetching data(read- only).
         // Use ** mutation ** for modifying data(write operations).
         getProducts: builder.query({
-            query: () => ({
+            query: ({ keyword, pageNumber }) => ({
                 url: PRODUCT_URL,
+                params: {
+                    keyword,
+                    pageNumber
+                }
             }),
             providesTags: ['Products'],
             keepUnusedDataFor: 5 // Retain unused data for 5 seconds before removing it from the cache
@@ -60,5 +64,5 @@ export const productApiSlice = apiSlice.injectEndpoints({
 });
 
 export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation,
-    useUploadProductImageMutation , useCreateReviewMutation
+    useUploadProductImageMutation, useCreateReviewMutation
 } = productApiSlice

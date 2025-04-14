@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation } from '../slices/userApiSlice';
 import { toast } from 'react-toastify';
 import { clearCredentials } from '../slices/authSlice';
+import SearchBox from '../components/SearchBox'
 
 const Header = () => {
 
@@ -39,6 +40,9 @@ const Header = () => {
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls='basic-navbar-nav' />
                     <Navbar.Collapse id='basic-navbar-nav' >
+
+                        <SearchBox />
+
                         <Nav className='ms-auto'>
                             <Nav.Link as={Link} to='/cart'><FaShoppingCart /><span className='ms-1' > {cartItems.length > 0 && (<Badge pill bg='success' style={{ marginLeft: "5px" }} >{cartItems.reduce((a, c) => a + c.qty, 0)}</Badge>)} Cart</span></Nav.Link>
                             {userInfo ? (
@@ -57,6 +61,7 @@ const Header = () => {
                                 </NavDropdown>
                             )}
                         </Nav>
+
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
